@@ -80,5 +80,5 @@ volumes:
 
 networks:
   cheftory_network:
-    name: dev_cheftory_network
+    name: cheftory_network
     driver: bridge
