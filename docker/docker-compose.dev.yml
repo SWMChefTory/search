@@ -1,0 +1,84 @@
+version: "3.8"
+
+services:
+  opensearch:
+    image: cheftory-opensearch-dev:latest
+    container_name: opensearch
+    env_file:
+      - .env
+    environment:
+      discovery.type: single-node
+      bootstrap.memory_lock: true
+      OPENSEARCH_JAVA_OPTS: "-Xms1g -Xmx1g"
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: ${OPENSEARCH_INITIAL_ADMIN_PASSWORD}
+      TZ: Asia/Seoul
+
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    ports:
+      - "9200:9200"
+      - "9600:9600"
+    volumes:
+      - opensearch-data:/usr/share/opensearch/data
+      - ./opensearch/opensearch.yml:/usr/share/opensearch/config/opensearch.yml
+    networks:
+      - cheftory_network
+
+  logstash:
+    image: opensearchproject/logstash-oss-with-opensearch-output-plugin:latest
+    container_name: logstash
+    env_file:
+      - .env
+    environment:
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      OPENSEARCH_HOST: ${OPENSEARCH_HOST}
+      OPENSEARCH_PORT: ${OPENSEARCH_PORT}
+      OPENSEARCH_USERNAME: ${OPENSEARCH_USERNAME}
+      OPENSEARCH_PASSWORD: ${OPENSEARCH_INITIAL_ADMIN_PASSWORD}
+      TZ: Asia/Seoul
+    depends_on:
+      - opensearch
+    volumes:
+      - ./logstash/pipeline:/usr/share/logstash/pipeline
+      - ./logstash/sql:/usr/share/logstash/pipeline/sql
+      - ./logstash/drivers:/drivers
+      - ./logstash/templates:/usr/share/logstash/templates
+      - ./logstash/pipelines.yml:/usr/share/logstash/config/pipelines.yml
+    networks:
+      - cheftory_network
+
+  dashboards:
+    image: opensearchproject/opensearch-dashboards:latest
+    container_name: opensearch-dashboards
+    env_file:
+      - .env
+    environment:
+      OPENSEARCH_HOSTS: '["http://${OPENSEARCH_HOST}:${OPENSEARCH_PORT}"]'
+      OPENSEARCH_SSL_VERIFICATIONMODE: none
+      OPENSEARCH_USERNAME: ${OPENSEARCH_USERNAME}
+      OPENSEARCH_PASSWORD: ${OPENSEARCH_INITIAL_ADMIN_PASSWORD}
+      TZ: Asia/Seoul
+    ports:
+      - "5601:5601"
+    depends_on:
+      - opensearch
+    networks:
+      - cheftory_network
+
+volumes:
+  opensearch-data:
+    driver: local
+
+networks:
+  cheftory_network:
+    name: dev_cheftory_network
+    driver: bridge
