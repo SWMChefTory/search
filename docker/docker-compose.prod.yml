@@ -2,9 +2,7 @@ version: "3.8"
 
 services:
   opensearch:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: cheftory-opensearch:latest
     container_name: opensearch
     env_file:
       - .env
@@ -27,7 +25,7 @@ services:
       - "9600:9600"
     volumes:
       - opensearch-data:/usr/share/opensearch/data
-      - ../opensearch/opensearch.yml:/usr/share/opensearch/config/opensearch.yml
+      - ./opensearch/opensearch.yml:/usr/share/opensearch/config/opensearch.yml
     networks:
       - cheftory_network
 
@@ -50,11 +48,11 @@ services:
     depends_on:
       - opensearch
     volumes:
-      - ../logstash/pipeline:/usr/share/logstash/pipeline
-      - ../logstash/sql:/usr/share/logstash/pipeline/sql
-      - ../logstash/drivers:/drivers
-      - ../logstash/templates:/usr/share/logstash/templates
-      - ../logstash/pipelines.yml:/usr/share/logstash/config/pipelines.yml
+      - ./logstash/pipeline:/usr/share/logstash/pipeline
+      - ./logstash/sql:/usr/share/logstash/pipeline/sql
+      - ./logstash/drivers:/drivers
+      - ./logstash/templates:/usr/share/logstash/templates
+      - ./logstash/pipelines.yml:/usr/share/logstash/config/pipelines.yml
     networks:
       - cheftory_network
 
