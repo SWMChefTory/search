@@ -75,7 +75,7 @@ jobs:
             DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
             EOF
 
-      - name: Copy docker-compose.dev.yml to EC2
+      - name: Copy docker-compose.prod.yml to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.EC2_HOST }}
