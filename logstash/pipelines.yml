@@ -1,0 +1,5 @@
+- pipeline.id: recipes-pipeline
+  path.config: "/usr/share/logstash/pipeline/recipes.conf"
+
+- pipeline.id: autocomplete-pipeline
+  path.config: "/usr/share/logstash/pipeline/autocomplete.conf"
