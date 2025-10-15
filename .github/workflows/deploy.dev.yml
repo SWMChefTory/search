@@ -64,7 +64,7 @@ jobs:
             cat <<EOF > .env
             COMPOSE_PROJECT_NAME=cheftory
             OPENSEARCH_INITIAL_ADMIN_PASSWORD=${{ secrets.OPENSEARCH_INITIAL_ADMIN_PASSWORD }}
-            ADMIN_PASSWORD=${{ secrets.OPENSEARCH_INITIAL_ADMIN_PASSWORD }}
+            ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}
             OPENSEARCH_HOST=${{ secrets.OPENSEARCH_HOST }}
             OPENSEARCH_PORT=${{ secrets.OPENSEARCH_PORT }}
             OPENSEARCH_USERNAME=${{ secrets.OPENSEARCH_USERNAME }}
@@ -74,7 +74,6 @@ jobs:
             DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }}
             DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
             EOF
-            
 
       - name: Copy docker-compose.dev.yml to EC2
         uses: appleboy/scp-action@v0.1.7
@@ -85,6 +84,60 @@ jobs:
           source: "docker/docker-compose.dev.yml"
           target: "/home/ubuntu/cheftory-search"
           strip_components: 1
+
+      - name: Copy opensearch config to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "opensearch/opensearch.yml"
+          target: "/home/${{ secrets.EC2_USER }}/cheftory-search/opensearch"
+
+      - name: Copy logstash pipeline to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "logstash/pipeline/*"
+          target: "/home/${{ secrets.EC2_USER }}/cheftory-search/logstash/pipeline"
+
+      - name: Copy logstash sql to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "logstash/sql/*"
+          target: "/home/${{ secrets.EC2_USER }}/cheftory-search/logstash/sql"
+
+      - name: Copy logstash drivers to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "logstash/drivers/*"
+          target: "/home/${{ secrets.EC2_USER }}/cheftory-search/logstash/drivers"
+
+      - name: Copy logstash templates to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "logstash/templates/*"
+          target: "/home/${{ secrets.EC2_USER }}/cheftory-search/logstash/templates"
+
+      - name: Copy logstash pipelines.yml to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "logstash/pipelines.yml"
+          target: "/home/${{ secrets.EC2_USER }}/cheftory-search/logstash"
 
       - name: List workspace files
         run: ls -R
