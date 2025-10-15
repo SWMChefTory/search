@@ -92,7 +92,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "opensearch/opensearch.yml"
-          target: "/home/${{ secrets.EC2_USER }}/cheftory-search/opensearch"
+          target: "/home/${{ secrets.EC2_USER }}/cheftory-search"
 
       - name: Copy logstash pipeline to EC2
         uses: appleboy/scp-action@v0.1.7
@@ -101,7 +101,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "logstash/pipeline/*"
-          target: "/home/${{ secrets.EC2_USER }}/cheftory-search/logstash/pipeline"
+          target: "/home/${{ secrets.EC2_USER }}/cheftory-search"
 
       - name: Copy logstash sql to EC2
         uses: appleboy/scp-action@v0.1.7
@@ -110,7 +110,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "logstash/sql/*"
-          target: "/home/${{ secrets.EC2_USER }}/cheftory-search/logstash/sql"
+          target: "/home/${{ secrets.EC2_USER }}/cheftory-search"
 
       - name: Copy logstash drivers to EC2
         uses: appleboy/scp-action@v0.1.7
@@ -119,7 +119,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "logstash/drivers/*"
-          target: "/home/${{ secrets.EC2_USER }}/cheftory-search/logstash/drivers"
+          target: "/home/${{ secrets.EC2_USER }}/cheftory-search"
 
       - name: Copy logstash templates to EC2
         uses: appleboy/scp-action@v0.1.7
@@ -128,7 +128,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "logstash/templates/*"
-          target: "/home/${{ secrets.EC2_USER }}/cheftory-search/logstash/templates"
+          target: "/home/${{ secrets.EC2_USER }}/cheftory-search"
 
       - name: Copy logstash pipelines.yml to EC2
         uses: appleboy/scp-action@v0.1.7
@@ -137,10 +137,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "logstash/pipelines.yml"
-          target: "/home/${{ secrets.EC2_USER }}/cheftory-search/logstash"
-
-      - name: List workspace files
-        run: ls -R
+          target: "/home/${{ secrets.EC2_USER }}/cheftory-search"
 
       - name: SSH to EC2 and deploy
         uses: appleboy/ssh-action@v1
