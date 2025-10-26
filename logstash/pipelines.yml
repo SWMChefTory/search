@@ -1,5 +1,8 @@
 - pipeline.id: recipes-pipeline
   path.config: "/usr/share/logstash/pipeline/recipes.conf"
 
+- pipeline.id: recipes-delete-pipeline
+  path.config: "/usr/share/logstash/pipeline/recipes_delete.conf"
+
 - pipeline.id: autocomplete-pipeline
   path.config: "/usr/share/logstash/pipeline/autocomplete.conf"
