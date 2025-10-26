@@ -18,7 +18,8 @@ SELECT
             rt.recipe_id = r.id
     ) AS tags_json,
     r.created_at,
-    r.updated_at
+    r.updated_at,
+    r.recipe_status
 FROM
     recipe r
 LEFT JOIN (
@@ -26,6 +27,6 @@ LEFT JOIN (
     FROM recipe_youtube_meta
 ) yi ON r.id = yi.recipe_id
 WHERE
-    r.recipe_status = 'SUCCESS'
+    r.recipe_status IN ('SUCCESS', 'BLOCK')
     AND r.updated_at > :sql_last_value
 ORDER BY r.updated_at ASC
