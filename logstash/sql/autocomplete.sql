@@ -14,17 +14,6 @@ FROM (
     UNION ALL
 
     SELECT
-    i.name AS text
-    FROM
-    recipe_ingredient i
-    JOIN
-    recipe r ON i.recipe_id = r.id
-    WHERE
-    r.recipe_status = 'SUCCESS'
-
-    UNION ALL
-
-    SELECT
     t.tag AS text
     FROM
     recipe_tag t
