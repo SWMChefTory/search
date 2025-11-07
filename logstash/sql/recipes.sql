@@ -1,6 +1,7 @@
 SELECT
     BIN_TO_UUID(r.id) AS id,
     yi.title,
+    CONCAT(rdm.servings, '인분') AS servings_text,
     (
         SELECT
             COALESCE(JSON_ARRAYAGG(ri.name), JSON_ARRAY())
@@ -21,10 +22,8 @@ SELECT
     r.updated_at
 FROM
     recipe r
-LEFT JOIN (
-    SELECT recipe_id, title
-    FROM recipe_youtube_meta
-) yi ON r.id = yi.recipe_id
+LEFT JOIN recipe_youtube_meta yi ON r.id = yi.recipe_id
+LEFT JOIN recipe_detail_meta rdm ON r.id = rdm.recipe_id
 WHERE
     r.recipe_status = 'SUCCESS'
     AND r.updated_at > :sql_last_value
