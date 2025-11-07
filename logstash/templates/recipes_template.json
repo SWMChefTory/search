@@ -74,6 +74,11 @@
           }
         }
       },
+      "servings_text": {
+        "type": "keyword",
+        "normalizer": "lower_lc",
+        "copy_to": ["searchText"]
+      },
       "ingredients": {
         "type": "text",
         "analyzer": "nori_analyzer",
