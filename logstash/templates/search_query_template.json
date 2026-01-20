@@ -1,5 +1,5 @@
 {
-  "index_patterns": ["recipes-*", "recipes"],
+  "index_patterns": ["search_query*", "search_query"],
   "settings": {
     "refresh_interval": "1s",
     "analysis": {
@@ -50,6 +50,14 @@
   "mappings": {
     "dynamic": "strict",
     "properties": {
+      "market": {
+        "type": "keyword",
+        "normalizer": "lower_lc"
+      },
+      "scope": {
+        "type": "keyword",
+        "normalizer": "lower_lc"
+      },
       "id": {
         "type": "keyword"
       },
@@ -92,6 +100,14 @@
             "type": "keyword",
             "normalizer": "lower_lc"
           }
+        }
+      },
+      "channel_title": {
+        "type": "text",
+        "analyzer": "nori_analyzer",
+        "copy_to": ["searchText"],
+        "fields": {
+          "ngram": { "type": "text", "analyzer": "title_ngram_analyzer" }
         }
       },
       "keywords": {
