@@ -52,26 +52,18 @@
   },
   "mappings": {
     "properties": {
+      "market": { "type": "keyword" },
+      "scope":  { "type": "keyword" },
       "text": {
         "type": "text",
         "analyzer": "nori_analyzer",
         "fields": {
-          "icu": {
-            "type": "text",
-            "analyzer": "icu_analyzer"
-          },
-          "keyword": {
-            "type": "keyword"
-          },
-          "ngram": {
-            "type": "text",
-            "analyzer": "autocomplete_analyzer"
-          }
+          "icu": { "type": "text", "analyzer": "icu_analyzer" },
+          "keyword": { "type": "keyword" },
+          "ngram": { "type": "text", "analyzer": "autocomplete_analyzer" }
         }
       },
-      "count": {
-        "type": "integer"
-      }
+      "count": { "type": "integer" }
     }
   }
 }
