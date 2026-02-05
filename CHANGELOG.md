@@ -20,6 +20,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.0] - 2026-02-05
+
+### Changed
+
+- `docker-compose.prod.yml`:
+  - Logstash의 `LS_JAVA_OPTS`를 `-Xms512m -Xmx512m`에서 `-Xms256m -Xmx256m`으로 조정하여 힙 메모리 사용량 최적화
+
+### Fixed
+
+- `recipes_delete.sql`:
+  - 검색 인덱스 삭제 대상에 `BLOCK` 상태뿐만 아니라 `FAILED` 상태의 레시피도 포함되도록 SQL 쿼리 수정
+
+---
+
 ## [1.0.9] - 2026-01-20
 
 ### Added
